@@ -1,0 +1,30 @@
+name: Scheduled URL Check
+
+on:
+  schedule:
+    # 每小时运行一次
+    - cron: '0 * * * *'
+  workflow_dispatch: # 手动触发
+
+jobs:
+  curl-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Make requests to multiple URLs
+      run: |
+        URLS=(
+          "https://mov.cloudns.be/api.php/timming/index.html?enforce=1&name=ScheduledURLCheck"
+        )
+        for URL in "${URLS[@]}"; do
+          echo "Checking $URL"
+          response=$(curl --write-out "%{http_code}" --silent --output /dev/null "$URL")
+          echo "HTTP Response for $URL: $response"
+          if [ "$response" -ne 200 ]; then
+            echo "Error: $URL returned status code $response"
+            exit 1
+          fi
+        done
