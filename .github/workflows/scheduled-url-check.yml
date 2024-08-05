@@ -17,7 +17,7 @@ jobs:
     - name: Make requests to multiple URLs
       run: |
         URLS=(
-          "https://mov.cloudns.be/api.php/timming/index.html?enforce=1&name=ScheduledURLCheck"
+          "https://vd.cloudns.be/api.php/timming/index.html?enforce=1&name=ScheduledURLCheck"
         )
         for URL in "${URLS[@]}"; do
           echo "Checking $URL"
